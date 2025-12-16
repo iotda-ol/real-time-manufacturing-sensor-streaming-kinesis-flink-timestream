@@ -1,0 +1,266 @@
+{
+  "dashboard": {
+    "title": "Manufacturing Analytics Dashboard",
+    "tags": ["manufacturing", "sensors", "real-time"],
+    "timezone": "browser",
+    "schemaVersion": 16,
+    "version": 1,
+    "refresh": "5s",
+    "panels": [
+      {
+        "id": 1,
+        "title": "Average Temperature by Machine",
+        "type": "timeseries",
+        "gridPos": {
+          "h": 8,
+          "w": 12,
+          "x": 0,
+          "y": 0
+        },
+        "targets": [
+          {
+            "datasource": {
+              "type": "grafana-timestream-datasource"
+            },
+            "rawQuery": "SELECT machine_id, CREATE_TIME_SERIES(time, measure_value::double) as avg_temp FROM $__database.$__table WHERE measure_name = 'avg_value' AND sensor_type = 'temperature' AND time between ago(1h) and now() GROUP BY machine_id",
+            "refId": "A"
+          }
+        ],
+        "fieldConfig": {
+          "defaults": {
+            "unit": "celsius",
+            "color": {
+              "mode": "palette-classic"
+            }
+          }
+        }
+      },
+      {
+        "id": 2,
+        "title": "Average Pressure by Machine",
+        "type": "timeseries",
+        "gridPos": {
+          "h": 8,
+          "w": 12,
+          "x": 12,
+          "y": 0
+        },
+        "targets": [
+          {
+            "datasource": {
+              "type": "grafana-timestream-datasource"
+            },
+            "rawQuery": "SELECT machine_id, CREATE_TIME_SERIES(time, measure_value::double) as avg_pressure FROM $__database.$__table WHERE measure_name = 'avg_value' AND sensor_type = 'pressure' AND time between ago(1h) and now() GROUP BY machine_id",
+            "refId": "A"
+          }
+        ],
+        "fieldConfig": {
+          "defaults": {
+            "unit": "pressurepsi",
+            "color": {
+              "mode": "palette-classic"
+            }
+          }
+        }
+      },
+      {
+        "id": 3,
+        "title": "Vibration Levels",
+        "type": "timeseries",
+        "gridPos": {
+          "h": 8,
+          "w": 12,
+          "x": 0,
+          "y": 8
+        },
+        "targets": [
+          {
+            "datasource": {
+              "type": "grafana-timestream-datasource"
+            },
+            "rawQuery": "SELECT machine_id, CREATE_TIME_SERIES(time, measure_value::double) as vibration FROM $__database.$__table WHERE measure_name = 'avg_value' AND sensor_type = 'vibration' AND time between ago(1h) and now() GROUP BY machine_id",
+            "refId": "A"
+          }
+        ],
+        "fieldConfig": {
+          "defaults": {
+            "unit": "none",
+            "color": {
+              "mode": "palette-classic"
+            }
+          }
+        }
+      },
+      {
+        "id": 4,
+        "title": "Power Consumption",
+        "type": "timeseries",
+        "gridPos": {
+          "h": 8,
+          "w": 12,
+          "x": 12,
+          "y": 8
+        },
+        "targets": [
+          {
+            "datasource": {
+              "type": "grafana-timestream-datasource"
+            },
+            "rawQuery": "SELECT machine_id, CREATE_TIME_SERIES(time, measure_value::double) as power FROM $__database.$__table WHERE measure_name = 'avg_value' AND sensor_type = 'power_consumption' AND time between ago(1h) and now() GROUP BY machine_id",
+            "refId": "A"
+          }
+        ],
+        "fieldConfig": {
+          "defaults": {
+            "unit": "watt",
+            "color": {
+              "mode": "palette-classic"
+            }
+          }
+        }
+      },
+      {
+        "id": 5,
+        "title": "Anomaly Detection Count",
+        "type": "stat",
+        "gridPos": {
+          "h": 6,
+          "w": 6,
+          "x": 0,
+          "y": 16
+        },
+        "targets": [
+          {
+            "datasource": {
+              "type": "grafana-timestream-datasource"
+            },
+            "rawQuery": "SELECT SUM(measure_value::bigint) as total_anomalies FROM $__database.$__table WHERE measure_name = 'anomaly_count' AND time between ago(1h) and now()",
+            "refId": "A"
+          }
+        ],
+        "fieldConfig": {
+          "defaults": {
+            "unit": "none",
+            "thresholds": {
+              "mode": "absolute",
+              "steps": [
+                {
+                  "value": 0,
+                  "color": "green"
+                },
+                {
+                  "value": 10,
+                  "color": "yellow"
+                },
+                {
+                  "value": 50,
+                  "color": "red"
+                }
+              ]
+            }
+          }
+        }
+      },
+      {
+        "id": 6,
+        "title": "Total Records Processed",
+        "type": "stat",
+        "gridPos": {
+          "h": 6,
+          "w": 6,
+          "x": 6,
+          "y": 16
+        },
+        "targets": [
+          {
+            "datasource": {
+              "type": "grafana-timestream-datasource"
+            },
+            "rawQuery": "SELECT SUM(measure_value::bigint) as total_records FROM $__database.$__table WHERE measure_name = 'record_count' AND time between ago(1h) and now()",
+            "refId": "A"
+          }
+        ],
+        "fieldConfig": {
+          "defaults": {
+            "unit": "none",
+            "color": {
+              "mode": "thresholds"
+            }
+          }
+        }
+      },
+      {
+        "id": 7,
+        "title": "Machine Cycle Time",
+        "type": "timeseries",
+        "gridPos": {
+          "h": 6,
+          "w": 12,
+          "x": 12,
+          "y": 16
+        },
+        "targets": [
+          {
+            "datasource": {
+              "type": "grafana-timestream-datasource"
+            },
+            "rawQuery": "SELECT machine_id, CREATE_TIME_SERIES(time, measure_value::double) as cycle_time FROM $__database.$__table WHERE measure_name = 'avg_value' AND sensor_type = 'cycle_time' AND time between ago(1h) and now() GROUP BY machine_id",
+            "refId": "A"
+          }
+        ],
+        "fieldConfig": {
+          "defaults": {
+            "unit": "s",
+            "color": {
+              "mode": "palette-classic"
+            }
+          }
+        }
+      },
+      {
+        "id": 8,
+        "title": "Max Values by Sensor Type",
+        "type": "table",
+        "gridPos": {
+          "h": 8,
+          "w": 12,
+          "x": 0,
+          "y": 22
+        },
+        "targets": [
+          {
+            "datasource": {
+              "type": "grafana-timestream-datasource"
+            },
+            "rawQuery": "SELECT machine_id, sensor_type, MAX(measure_value::double) as max_value FROM $__database.$__table WHERE measure_name = 'max_value' AND time between ago(1h) and now() GROUP BY machine_id, sensor_type ORDER BY max_value DESC",
+            "refId": "A"
+          }
+        ]
+      },
+      {
+        "id": 9,
+        "title": "Production Line Performance",
+        "type": "bargauge",
+        "gridPos": {
+          "h": 8,
+          "w": 12,
+          "x": 12,
+          "y": 22
+        },
+        "targets": [
+          {
+            "datasource": {
+              "type": "grafana-timestream-datasource"
+            },
+            "rawQuery": "SELECT production_line, AVG(measure_value::double) as avg_efficiency FROM $__database.$__table WHERE measure_name = 'avg_value' AND time between ago(1h) and now() GROUP BY production_line",
+            "refId": "A"
+          }
+        ],
+        "options": {
+          "orientation": "horizontal",
+          "displayMode": "gradient"
+        }
+      }
+    ]
+  }
+}
