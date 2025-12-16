@@ -24,7 +24,7 @@ resource "aws_kinesisanalyticsv2_application" "sensor_processor" {
       code_content {
         s3_content_location {
           bucket_arn = aws_s3_bucket.flink_artifacts.arn
-          file_key   = "flink-app.jar"
+          file_key   = var.flink_jar_key
         }
       }
 
@@ -40,6 +40,7 @@ resource "aws_kinesisanalyticsv2_application" "sensor_processor" {
           "timestream.database"   = aws_timestreamwrite_database.manufacturing_db.database_name
           "timestream.table"      = aws_timestreamwrite_table.sensor_metrics.table_name
           "kinesis.stream.name"   = aws_kinesis_stream.sensor_stream.name
+          "kinesis.stream.arn"    = aws_kinesis_stream.sensor_stream.arn
         }
       }
 

@@ -44,19 +44,21 @@ public class SensorStreamProcessor {
         final String streamName = params.get("kinesis.stream.name");
         final String timestreamDatabase = params.get("timestream.database");
         final String timestreamTable = params.get("timestream.table");
+        final String streamArn = params.get("kinesis.stream.arn");
         
         LOG.info("Starting Sensor Stream Processor");
         LOG.info("Kinesis Stream: {}", streamName);
         LOG.info("Timestream Database: {}", timestreamDatabase);
         LOG.info("Timestream Table: {}", timestreamTable);
         
-        // Configure Kinesis Source with stream name instead of ARN
+        // Configure Kinesis Source
         Properties consumerConfig = new Properties();
         consumerConfig.setProperty("aws.region", region);
         consumerConfig.setProperty("flink.stream.initpos", "LATEST");
         
+        // Use stream ARN passed from configuration
         KinesisStreamsSource<String> kinesisSource = KinesisStreamsSource.<String>builder()
-                .setStreamArn("arn:aws:kinesis:" + region + ":000000000000:stream/" + streamName)
+                .setStreamArn(streamArn)
                 .setDeserializationSchema(new SimpleStringSchema())
                 .build();
         

@@ -51,3 +51,9 @@ variable "alarm_email" {
   type        = string
   default     = ""
 }
+
+variable "flink_jar_key" {
+  description = "S3 object key for the Flink application JAR"
+  type        = string
+  default     = "flink-app.jar"
+}

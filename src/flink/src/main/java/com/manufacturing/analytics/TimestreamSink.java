@@ -83,7 +83,9 @@ public class TimestreamSink extends RichSinkFunction<SensorStreamProcessor.Aggre
     private List<software.amazon.awssdk.services.timestreamwrite.model.Record> createTimestreamRecords(SensorStreamProcessor.AggregatedMetrics metrics) {
         List<software.amazon.awssdk.services.timestreamwrite.model.Record> records = new ArrayList<>();
         
-        String currentTime = String.valueOf(System.currentTimeMillis());
+        // Use window end time as the timestamp for aggregated metrics
+        // This ensures time-series continuity and proper ordering
+        String eventTime = String.valueOf(metrics.windowEnd);
         
         // Common dimensions for all records
         List<Dimension> dimensions = new ArrayList<>();
@@ -98,7 +100,7 @@ public class TimestreamSink extends RichSinkFunction<SensorStreamProcessor.Aggre
                 .measureName("avg_value")
                 .measureValue(String.valueOf(metrics.avgValue))
                 .measureValueType(MeasureValueType.DOUBLE)
-                .time(currentTime)
+                .time(eventTime)
                 .timeUnit(TimeUnit.MILLISECONDS)
                 .build());
         
@@ -108,7 +110,7 @@ public class TimestreamSink extends RichSinkFunction<SensorStreamProcessor.Aggre
                 .measureName("min_value")
                 .measureValue(String.valueOf(metrics.minValue))
                 .measureValueType(MeasureValueType.DOUBLE)
-                .time(currentTime)
+                .time(eventTime)
                 .timeUnit(TimeUnit.MILLISECONDS)
                 .build());
         
@@ -118,7 +120,7 @@ public class TimestreamSink extends RichSinkFunction<SensorStreamProcessor.Aggre
                 .measureName("max_value")
                 .measureValue(String.valueOf(metrics.maxValue))
                 .measureValueType(MeasureValueType.DOUBLE)
-                .time(currentTime)
+                .time(eventTime)
                 .timeUnit(TimeUnit.MILLISECONDS)
                 .build());
         
@@ -128,7 +130,7 @@ public class TimestreamSink extends RichSinkFunction<SensorStreamProcessor.Aggre
                 .measureName("record_count")
                 .measureValue(String.valueOf(metrics.count))
                 .measureValueType(MeasureValueType.BIGINT)
-                .time(currentTime)
+                .time(eventTime)
                 .timeUnit(TimeUnit.MILLISECONDS)
                 .build());
         
@@ -138,7 +140,7 @@ public class TimestreamSink extends RichSinkFunction<SensorStreamProcessor.Aggre
                 .measureName("anomaly_count")
                 .measureValue(String.valueOf(metrics.anomalyCount))
                 .measureValueType(MeasureValueType.BIGINT)
-                .time(currentTime)
+                .time(eventTime)
                 .timeUnit(TimeUnit.MILLISECONDS)
                 .build());
         
