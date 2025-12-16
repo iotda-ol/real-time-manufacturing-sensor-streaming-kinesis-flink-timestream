@@ -50,16 +50,14 @@ public class SensorStreamProcessor {
         LOG.info("Timestream Database: {}", timestreamDatabase);
         LOG.info("Timestream Table: {}", timestreamTable);
         
-        // Configure Kinesis Source
+        // Configure Kinesis Source with stream name instead of ARN
         Properties consumerConfig = new Properties();
-        consumerConfig.put("aws.region", region);
-        consumerConfig.put("flink.stream.initpos", "LATEST");
+        consumerConfig.setProperty("aws.region", region);
+        consumerConfig.setProperty("flink.stream.initpos", "LATEST");
         
         KinesisStreamsSource<String> kinesisSource = KinesisStreamsSource.<String>builder()
-                .setStreamArn("arn:aws:kinesis:" + region + ":" + System.getenv("AWS_ACCOUNT_ID") + ":stream/" + streamName)
+                .setStreamArn("arn:aws:kinesis:" + region + ":000000000000:stream/" + streamName)
                 .setDeserializationSchema(new SimpleStringSchema())
-                .setProperty("aws.region", region)
-                .setProperty("flink.stream.initpos", "LATEST")
                 .build();
         
         // Read from Kinesis

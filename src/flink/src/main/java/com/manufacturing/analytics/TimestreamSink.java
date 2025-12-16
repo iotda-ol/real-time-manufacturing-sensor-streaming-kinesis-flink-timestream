@@ -6,7 +6,13 @@ import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import software.amazon.awssdk.regions.Region;
 import software.amazon.awssdk.services.timestreamwrite.TimestreamWriteClient;
-import software.amazon.awssdk.services.timestreamwrite.model.*;
+import software.amazon.awssdk.services.timestreamwrite.model.Dimension;
+import software.amazon.awssdk.services.timestreamwrite.model.MeasureValueType;
+import software.amazon.awssdk.services.timestreamwrite.model.RejectedRecord;
+import software.amazon.awssdk.services.timestreamwrite.model.RejectedRecordsException;
+import software.amazon.awssdk.services.timestreamwrite.model.TimeUnit;
+import software.amazon.awssdk.services.timestreamwrite.model.WriteRecordsRequest;
+import software.amazon.awssdk.services.timestreamwrite.model.WriteRecordsResponse;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -45,7 +51,7 @@ public class TimestreamSink extends RichSinkFunction<SensorStreamProcessor.Aggre
     @Override
     public void invoke(SensorStreamProcessor.AggregatedMetrics metrics, Context context) throws Exception {
         try {
-            List<Record> records = createTimestreamRecords(metrics);
+            List<software.amazon.awssdk.services.timestreamwrite.model.Record> records = createTimestreamRecords(metrics);
             
             WriteRecordsRequest writeRecordsRequest = WriteRecordsRequest.builder()
                     .databaseName(databaseName)
@@ -74,8 +80,8 @@ public class TimestreamSink extends RichSinkFunction<SensorStreamProcessor.Aggre
     /**
      * Create Timestream records from aggregated metrics
      */
-    private List<Record> createTimestreamRecords(SensorStreamProcessor.AggregatedMetrics metrics) {
-        List<Record> records = new ArrayList<>();
+    private List<software.amazon.awssdk.services.timestreamwrite.model.Record> createTimestreamRecords(SensorStreamProcessor.AggregatedMetrics metrics) {
+        List<software.amazon.awssdk.services.timestreamwrite.model.Record> records = new ArrayList<>();
         
         String currentTime = String.valueOf(System.currentTimeMillis());
         
@@ -87,7 +93,7 @@ public class TimestreamSink extends RichSinkFunction<SensorStreamProcessor.Aggre
         dimensions.add(Dimension.builder().name("production_line").value(metrics.productionLine).build());
         
         // Average value record
-        records.add(Record.builder()
+        records.add(software.amazon.awssdk.services.timestreamwrite.model.Record.builder()
                 .dimensions(dimensions)
                 .measureName("avg_value")
                 .measureValue(String.valueOf(metrics.avgValue))
@@ -97,7 +103,7 @@ public class TimestreamSink extends RichSinkFunction<SensorStreamProcessor.Aggre
                 .build());
         
         // Min value record
-        records.add(Record.builder()
+        records.add(software.amazon.awssdk.services.timestreamwrite.model.Record.builder()
                 .dimensions(dimensions)
                 .measureName("min_value")
                 .measureValue(String.valueOf(metrics.minValue))
@@ -107,7 +113,7 @@ public class TimestreamSink extends RichSinkFunction<SensorStreamProcessor.Aggre
                 .build());
         
         // Max value record
-        records.add(Record.builder()
+        records.add(software.amazon.awssdk.services.timestreamwrite.model.Record.builder()
                 .dimensions(dimensions)
                 .measureName("max_value")
                 .measureValue(String.valueOf(metrics.maxValue))
@@ -117,7 +123,7 @@ public class TimestreamSink extends RichSinkFunction<SensorStreamProcessor.Aggre
                 .build());
         
         // Count record
-        records.add(Record.builder()
+        records.add(software.amazon.awssdk.services.timestreamwrite.model.Record.builder()
                 .dimensions(dimensions)
                 .measureName("record_count")
                 .measureValue(String.valueOf(metrics.count))
@@ -127,7 +133,7 @@ public class TimestreamSink extends RichSinkFunction<SensorStreamProcessor.Aggre
                 .build());
         
         // Anomaly count record
-        records.add(Record.builder()
+        records.add(software.amazon.awssdk.services.timestreamwrite.model.Record.builder()
                 .dimensions(dimensions)
                 .measureName("anomaly_count")
                 .measureValue(String.valueOf(metrics.anomalyCount))
