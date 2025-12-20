@@ -1,3 +1,13 @@
 boto3>=1.26.0
 botocore>=1.29.0
 python-dateutil>=2.8.0
+
+# Testing dependencies
+pytest>=7.0.0
+pytest-cov>=4.0.0
+
+# Code quality
+black>=22.0.0
+flake8>=5.0.0
+mypy>=0.990
+

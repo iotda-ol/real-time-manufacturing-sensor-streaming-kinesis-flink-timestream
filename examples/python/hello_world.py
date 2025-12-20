@@ -12,9 +12,10 @@ import sys
 from pathlib import Path
 
 # Add parent directory to path
-sys.path.insert(0, str(Path(__file__).parent.parent.parent))
+parent_dir = Path(__file__).parent.parent.parent
+sys.path.insert(0, str(parent_dir))
 
-from python.src.ingestion import DataGenerator
+from python.src.ingestion.data_generator import DataGenerator
 
 
 def main():
