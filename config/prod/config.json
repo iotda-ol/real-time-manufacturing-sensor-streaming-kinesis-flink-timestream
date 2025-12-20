@@ -1,0 +1,45 @@
+{
+  "aws": {
+    "region": "us-east-1",
+    "account_id": ""
+  },
+  "project": {
+    "name": "manufacturing-sensor-streaming",
+    "environment": "prod",
+    "owner": "Engineering Team",
+    "cost_center": "IoT-Manufacturing"
+  },
+  "kinesis": {
+    "stream_name": "manufacturing-sensor-stream-prod",
+    "shard_count": 10,
+    "retention_hours": 168,
+    "encryption_enabled": true
+  },
+  "timestream": {
+    "database": "manufacturing_db_prod",
+    "table": "sensor_data",
+    "memory_retention_hours": 24,
+    "magnetic_retention_days": 365
+  },
+  "flink": {
+    "application_name": "sensor-processor-prod",
+    "runtime_environment": "FLINK-1_15",
+    "parallelism": 10,
+    "checkpoint_interval_ms": 30000
+  },
+  "data_generator": {
+    "num_machines": 50,
+    "sensors_per_machine": 8,
+    "interval_seconds": 0.5,
+    "location": "Factory-A-Production"
+  },
+  "logging": {
+    "level": "INFO",
+    "json_format": true,
+    "cloudwatch_enabled": true
+  },
+  "monitoring": {
+    "metrics_namespace": "ManufacturingSensors/Prod",
+    "alarm_email": "alerts@example.com"
+  }
+}
