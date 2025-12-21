@@ -13,6 +13,61 @@ __pycache__/
 *$py.class
 *.so
 .Python
+build/
+develop-eggs/
+dist/
+downloads/
+eggs/
+.eggs/
+lib/
+lib64/
+parts/
+sdist/
+var/
+wheels/
+pip-wheel-metadata/
+share/python-wheels/
+*.egg-info/
+.installed.cfg
+*.egg
+MANIFEST
+.pytest_cache/
+.coverage
+htmlcov/
+*.cover
+.hypothesis/
+.venv
+venv/
+ENV/
+env/
+
+# Terraform
+*.tfstate
+*.tfstate.*
+.terraform/
+.terraform.lock.hcl
+crash.log
+*.tfvars
+override.tf
+override.tf.json
+*_override.tf
+*_override.tf.json
+
+# IDE
+.vscode/
+.idea/
+*.swp
+*.swo
+*~
+.DS_Store
+
+# AWS
+.aws/
+credentials
+
+# Logs
+logs/
+*.log
 venv/
 env/
 ENV/
@@ -47,3 +102,7 @@ logs/
 tmp/
 temp/
 *.tmp
+
+# Environment files
+.env
+.env.local

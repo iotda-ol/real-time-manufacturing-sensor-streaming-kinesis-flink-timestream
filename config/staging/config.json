@@ -1,0 +1,45 @@
+{
+  "aws": {
+    "region": "us-east-1",
+    "account_id": ""
+  },
+  "project": {
+    "name": "manufacturing-sensor-streaming",
+    "environment": "staging",
+    "owner": "Engineering Team",
+    "cost_center": "IoT-Manufacturing"
+  },
+  "kinesis": {
+    "stream_name": "manufacturing-sensor-stream-staging",
+    "shard_count": 5,
+    "retention_hours": 48,
+    "encryption_enabled": true
+  },
+  "timestream": {
+    "database": "manufacturing_db_staging",
+    "table": "sensor_data",
+    "memory_retention_hours": 24,
+    "magnetic_retention_days": 90
+  },
+  "flink": {
+    "application_name": "sensor-processor-staging",
+    "runtime_environment": "FLINK-1_15",
+    "parallelism": 5,
+    "checkpoint_interval_ms": 45000
+  },
+  "data_generator": {
+    "num_machines": 20,
+    "sensors_per_machine": 6,
+    "interval_seconds": 0.75,
+    "location": "Factory-A-Staging"
+  },
+  "logging": {
+    "level": "INFO",
+    "json_format": true,
+    "cloudwatch_enabled": true
+  },
+  "monitoring": {
+    "metrics_namespace": "ManufacturingSensors/Staging",
+    "alarm_email": "alerts@example.com"
+  }
+}
