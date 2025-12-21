@@ -1,0 +1,25 @@
+# Example Terraform variables file
+# Copy this file to terraform.tfvars and customize for your environment
+
+# AWS region for all resources
+aws_region = "us-east-1"
+
+# Environment name (dev, staging, prod)
+environment = "dev"
+
+# Project name for resource naming
+project_name = "manufacturing-analytics"
+
+# Kinesis Data Stream configuration
+kinesis_shard_count      = 2   # Number of shards (scale for throughput)
+kinesis_retention_hours  = 24  # Data retention period
+
+# Timestream configuration
+timestream_memory_retention_hours  = 24  # Memory store retention (fast queries)
+timestream_magnetic_retention_days = 90  # Magnetic store retention (cost-effective)
+
+# Monitoring configuration
+enable_enhanced_monitoring = true
+
+# Email for CloudWatch alarms (optional)
+# alarm_email = "your-email@example.com"

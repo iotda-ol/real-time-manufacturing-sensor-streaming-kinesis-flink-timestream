@@ -1,3 +1,12 @@
+# Terraform
+*.tfstate
+*.tfstate.*
+.terraform/
+.terraform.lock.hcl
+terraform.tfvars
+*.tfplan
+outputs.json
+
 # Python
 __pycache__/
 *.py[cod]
@@ -59,6 +68,35 @@ credentials
 # Logs
 logs/
 *.log
+venv/
+env/
+ENV/
+*.egg-info/
+dist/
+build/
+
+# Java/Maven
+target/
+*.class
+*.jar
+*.war
+*.ear
+.mvn/
+mvnw
+mvnw.cmd
+dependency-reduced-pom.xml
+
+# IDE
+.idea/
+.vscode/
+*.iml
+*.swp
+*.swo
+.DS_Store
+
+# Logs
+*.log
+logs/
 
 # Temporary files
 tmp/
